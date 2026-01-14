@@ -25,7 +25,13 @@ import {
     changeSlideBackground,
 } from "./functions.js";
 
-const minimalPresentation: Presentation = {
+const minSlide: Slide = {
+    id: 'min_slide1',
+    elements: [],
+    background: '#000000'
+};
+
+const minPresentation: Presentation = {
     id: 'min_pres',
     title: 'Empty Presentation',
     slideList: [],
@@ -137,17 +143,17 @@ const maxPresentation: Presentation = {
 function testMinimalPresentation() {
     console.log('Test presentation with minimal data');
 
-    const renamedPresentation = updatePresentationTitle(minimalPresentation, 'New test name');
+    const renamedPresentation = updatePresentationTitle(minPresentation, 'New test name');
     console.log('Rename presentation: ' + (renamedPresentation.title === 'New test name' ? 'done' : 'failed'));
 
 
-    let presentationWithSlide = addSlide(minimalPresentation);
+    let presentationWithSlide = addSlide(minPresentation);
     console.log('Add slide to presentation: ' + (presentationWithSlide.slideList.length === 1 ? 'done' : 'failed'));
     presentationWithSlide = removeSlides(presentationWithSlide, [presentationWithSlide.slideList[0].id]);
     console.log('Remove slide from presentation: ' + (presentationWithSlide.slideList.length === 0 ? 'done' : 'failed'));
 
 
-    let presentationWithSlideToMove = addSlide(minimalPresentation);
+    let presentationWithSlideToMove = addSlide(minPresentation);
     const movedSlideId = presentationWithSlideToMove.slideList[0].id;
     presentationWithSlideToMove = addSlide(presentationWithSlideToMove);
     presentationWithSlideToMove = addSlide(presentationWithSlideToMove);
@@ -155,8 +161,7 @@ function testMinimalPresentation() {
     console.log('Move slide: ' + (presentationWithSlideToMove.slideList[2].id === movedSlideId ? 'done' : 'failed'));
 
 
-    const presentationWithElementsOnSlide = addSlide(minimalPresentation);
-    let slideWithElements = addTextElement(presentationWithElementsOnSlide.slideList[0]);
+    let slideWithElements = addTextElement(minSlide);
     console.log('Add text element on slide: ' + (slideWithElements.elements.length === 1 && slideWithElements.elements[0].type === 'text' ? 'done' : 'failed'));
     const textElementId = slideWithElements.elements[0].id;
     slideWithElements = addPictureElement(slideWithElements);
@@ -168,8 +173,7 @@ function testMinimalPresentation() {
     console.log('Remove text element from slide: ' + (slideWithElements.elements.length === 0 ? 'done' : 'failed'));
 
 
-    const presentationWithChangeELementPostionOnSlide = addSlide(minimalPresentation);
-    let slideWithMovedElement = addPictureElement(presentationWithChangeELementPostionOnSlide.slideList[0]);
+    let slideWithMovedElement = addPictureElement(minSlide);
     const changedPositionSlideElementId = slideWithMovedElement.elements[0].id;
     slideWithMovedElement = changeElementPosition(slideWithMovedElement, changedPositionSlideElementId, {
         x: 150,
@@ -179,8 +183,7 @@ function testMinimalPresentation() {
     slideWithMovedElement = changeElementPosition(slideWithMovedElement, changedPositionSlideElementId, {x: 13, y: 11});
     console.log('Elemenet moved to 13 11: ' + (slideWithMovedElement.elements[0].position.x === 13 && slideWithMovedElement.elements[0].position.y === 11 ? 'done' : 'failed'));
 
-    const presentationWithChangeELementSize = addSlide(minimalPresentation);
-    let slideWithChangedElementSize = addPictureElement(presentationWithChangeELementSize.slideList[0]);
+    let slideWithChangedElementSize = addPictureElement(minSlide);
     const changedSizeElementId = slideWithChangedElementSize.elements[0].id;
     slideWithChangedElementSize = changeElementSize(slideWithChangedElementSize, changedSizeElementId, {
         width: 150,
@@ -193,8 +196,7 @@ function testMinimalPresentation() {
     });
     console.log('Elemenet resized to 13x11: ' + (slideWithChangedElementSize.elements[0].size.width === 13 && slideWithChangedElementSize.elements[0].size.height === 11 ? 'done' : 'failed'));
 
-    const presentationOnTestElementPropertiesChange = addSlide(minimalPresentation);
-    let slideWithText = addTextElement(presentationOnTestElementPropertiesChange.slideList[0]);
+    let slideWithText = addTextElement(minSlide);
     const textElementIdToChangeFont = slideWithText.elements[0].id;
     slideWithText = changeTextFontSize(slideWithText, textElementIdToChangeFont, 15);
     slideWithText = changeTextFontFamily(slideWithText, textElementIdToChangeFont, 'Arial');
@@ -225,8 +227,7 @@ function testMinimalPresentation() {
             : 'failed')
     );
 
-    const presentationWithChangeSlideBackground = addSlide(minimalPresentation);
-    let slideWithChangedBackground = changeSlideBackground(presentationWithChangeSlideBackground.slideList[0], '#FFF000');
+    let slideWithChangedBackground = changeSlideBackground(minSlide, '#FFF000');
     console.log('Slide background changed to #FFF000: ' + (slideWithChangedBackground.background === '#FFF000' ? 'done' : 'failed'));
     slideWithChangedBackground = changeSlideBackground(slideWithChangedBackground, '#000FFF');
     console.log('Slide background changed to #000FFF: ' + (slideWithChangedBackground.background === '#000FFF' ? 'done' : 'failed'));
