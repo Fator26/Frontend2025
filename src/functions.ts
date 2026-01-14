@@ -5,7 +5,7 @@ import {
     SlideElement,
     ElementSize,
     ElementPosition,
-} from "./types";
+} from "./types.js";
 
 export function updatePresentationTitle(presentation: Presentation, title: string): Presentation {
     return {
@@ -15,7 +15,7 @@ export function updatePresentationTitle(presentation: Presentation, title: strin
 }
 
 export function addSlide(presentation: Presentation): Presentation {
-    const newSlide = creteSlide();
+    const newSlide = createSlide();
     let newSlideList: SlideList;
     let newCurrentSlide: number;
 
@@ -23,7 +23,8 @@ export function addSlide(presentation: Presentation): Presentation {
         newSlideList = [newSlide];
         newCurrentSlide = 0;
     } else {
-        newSlideList = presentation.slideList.splice(presentation.currentSlide, 0, newSlide);
+        newSlideList = presentation.slideList;
+        newSlideList.splice(presentation.currentSlide + 1, 0, newSlide);
         newCurrentSlide = presentation.currentSlide + 1;
     }
 
@@ -51,12 +52,8 @@ export function removeSlides(presentation: Presentation, slideIds: string[]): Pr
 }
 
 export function changeSlidePosition(presentation: Presentation, newPosition: number): Presentation {
-    if (presentation.currentSlide === null) {
-        return {...presentation};
-    }
-
     const slides = [...presentation.slideList];
-    const [movedSlide] = slides.splice(presentation.currentSlide, 1);
+    const [movedSlide] = slides.splice(<number>presentation.currentSlide, 1);
     slides.splice(newPosition, 0, movedSlide);
 
 
@@ -211,7 +208,7 @@ export function changeSlideBackground(slide: Slide, background: string): Slide {
     };
 }
 
-function creteSlide(): Slide {
+function createSlide(): Slide {
     return {
         id: generateId(),
         background: '#FFFFFF',
@@ -220,5 +217,6 @@ function creteSlide(): Slide {
 }
 
 function generateId(): string {
-    return `f${(+new Date().getMilliseconds()).toString(16)}`;
+    // return `f${(+new Date().getMilliseconds()).toString(16)}`;
+    return `f${crypto.randomUUID()}`;
 }

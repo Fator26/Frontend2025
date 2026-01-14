@@ -1,96 +1,57 @@
-import {
-    Presentation,
-    SlideList,
-    Slide,
-    SlideElement,
-    ElementSize,
-    ElementPosition,
-    Selection,
-    TextElement,
-    PictureElement
-} from "./types.js";
-
-import {
-    updatePresentationTitle,
-    addSlide,
-    removeSlides,
-    changeSlidePosition,
-    addTextElement,
-    addPictureElement,
-    deleteObjects,
-    changeElementPosition,
-    changeElementSize,
-    changeTextContent,
-    changeTextFontSize,
-    changeTextFontFamily,
-    changeTextColor,
-    changeSlideBackground,
-} from "./functions.js";
-
-const minimalPresentation: Presentation = {
+import { updatePresentationTitle, addSlide, removeSlides, changeSlidePosition, addTextElement, addPictureElement, deleteObjects, changeElementPosition, changeElementSize, changeTextContent, changeTextFontSize, changeTextFontFamily, changeTextColor, changeSlideBackground, } from "./functions.js";
+var minimalPresentation = {
     id: 'min_pres',
     title: 'Empty Presentation',
     slideList: [],
     currentSlide: null
 };
-
-const pictureElement1Position: ElementPosition = {
+var pictureElement1Position = {
     x: 100,
     y: 100
-}
-
-const pictureElement2Position: ElementPosition = {
+};
+var pictureElement2Position = {
     x: 200,
     y: 100
-}
-
-const textElement1Position: ElementPosition = {
+};
+var textElement1Position = {
     x: 100,
     y: 200
-}
-
-const textElement2Position: ElementPosition = {
+};
+var textElement2Position = {
     x: 200,
     y: 200
-}
-
-const pictureElement1Size: ElementSize = {
+};
+var pictureElement1Size = {
     width: 50,
     height: 20
-}
-
-const pictureElement2Size: ElementSize = {
+};
+var pictureElement2Size = {
     width: 20,
     height: 50
-}
-
-const textElement1Size: ElementSize = {
+};
+var textElement1Size = {
     width: 20,
     height: 20
-}
-
-const textElement2Size: ElementSize = {
+};
+var textElement2Size = {
     width: 50,
     height: 50
-}
-
-const pictureElement1: PictureElement = {
+};
+var pictureElement1 = {
     id: 'picture_element1',
     type: 'picture',
     src: './image/test1.png',
     position: pictureElement1Position,
     size: pictureElement1Size,
 };
-
-const pictureElement2: PictureElement = {
+var pictureElement2 = {
     id: 'picture_element2',
     type: 'picture',
     src: './image/test2.png',
     position: pictureElement2Position,
     size: pictureElement2Size,
 };
-
-const textElement1: TextElement = {
+var textElement1 = {
     id: 'text_element1',
     type: 'text',
     content: 'maximal content 1',
@@ -100,7 +61,7 @@ const textElement1: TextElement = {
     fontFamily: 'Arial',
     color: '#FF00FF',
 };
-const textElement2: TextElement = {
+var textElement2 = {
     id: 'text_element2',
     type: 'text',
     content: 'maximal content 2',
@@ -110,80 +71,65 @@ const textElement2: TextElement = {
     fontFamily: 'Calibri',
     color: '#F0000F',
 };
-
-const slide1: Slide = {
+var slide1 = {
     id: 'slide1',
     background: '#FF0000',
     elements: [textElement1, pictureElement1]
 };
-
-const slide2: Slide = {
+var slide2 = {
     id: 'slide2',
     background: '#FFFF00',
     elements: [pictureElement2]
 };
-
-const slide3: Slide = {
+var slide3 = {
     id: 'slide3',
     background: '#FFFFFF',
     elements: [textElement2]
 };
-
-const maxPresentation: Presentation = {
+var maxPresentation = {
     id: 'max_presentation',
     title: 'Max Presentation',
     slideList: [slide1, slide2, slide3],
     currentSlide: 0
-}
-
+};
 function testMinimalPresentation() {
     console.log('Test presentation with minimal data');
-
-    const renamedPresentation = updatePresentationTitle(minimalPresentation, 'New test name');
+    var renamedPresentation = updatePresentationTitle(minimalPresentation, 'New test name');
     console.log('Rename presentation: ' + (renamedPresentation.title === 'New test name' ? 'done' : 'failed'));
-
-
-    let presentationWithSlide = addSlide(minimalPresentation);
+    var presentationWithSlide = addSlide(minimalPresentation);
     console.log('Add slide to presentation: ' + (presentationWithSlide.slideList.length === 1 ? 'done' : 'failed'));
     presentationWithSlide = removeSlides(presentationWithSlide, [presentationWithSlide.slideList[0].id]);
     console.log('Remove slide from presentation: ' + (presentationWithSlide.slideList.length === 0 ? 'done' : 'failed'));
-
-
-    let presentationWithSlideToMove = addSlide(minimalPresentation);
-    const movedSlideId = presentationWithSlideToMove.slideList[0].id;
+    var presentationWithSlideToMove = addSlide(minimalPresentation);
+    var movedSlideId = presentationWithSlideToMove.slideList[0].id;
     presentationWithSlideToMove = addSlide(presentationWithSlideToMove);
     presentationWithSlideToMove = addSlide(presentationWithSlideToMove);
     presentationWithSlideToMove = changeSlidePosition(presentationWithSlideToMove, 2);
     console.log('Move slide: ' + (presentationWithSlideToMove.slideList[2].id === movedSlideId ? 'done' : 'failed'));
-
-
-    const presentationWithElementsOnSlide = addSlide(minimalPresentation);
-    let slideWithElements = addTextElement(presentationWithElementsOnSlide.slideList[0]);
+    var presentationWithElementsOnSlide = addSlide(minimalPresentation);
+    var slideWithElements = addTextElement(presentationWithElementsOnSlide.slideList[0]);
     console.log('Add text element on slide: ' + (slideWithElements.elements.length === 1 && slideWithElements.elements[0].type === 'text' ? 'done' : 'failed'));
-    const textElementId = slideWithElements.elements[0].id;
+    var textElementId = slideWithElements.elements[0].id;
     slideWithElements = addPictureElement(slideWithElements);
     console.log('Add picture element on slide: ' + (slideWithElements.elements.length === 2 && slideWithElements.elements[1].type === 'picture' ? 'done' : 'failed'));
-    const pictureElementId = slideWithElements.elements[1].id;
+    var pictureElementId = slideWithElements.elements[1].id;
     slideWithElements = deleteObjects(slideWithElements, [pictureElementId]);
     console.log('Remove picture element from slide: ' + (slideWithElements.elements.length === 1 && slideWithElements.elements[0].type === 'text' ? 'done' : 'failed'));
     slideWithElements = deleteObjects(slideWithElements, [textElementId]);
     console.log('Remove text element from slide: ' + (slideWithElements.elements.length === 0 ? 'done' : 'failed'));
-
-
-    const presentationWithChangeELementPostionOnSlide = addSlide(minimalPresentation);
-    let slideWithMovedElement = addPictureElement(presentationWithChangeELementPostionOnSlide.slideList[0]);
-    const changedPositionSlideElementId = slideWithMovedElement.elements[0].id;
+    var presentationWithChangeELementPostionOnSlide = addSlide(minimalPresentation);
+    var slideWithMovedElement = addPictureElement(presentationWithChangeELementPostionOnSlide.slideList[0]);
+    var changedPositionSlideElementId = slideWithMovedElement.elements[0].id;
     slideWithMovedElement = changeElementPosition(slideWithMovedElement, changedPositionSlideElementId, {
         x: 150,
         y: 150
     });
     console.log('Elemenet moved to 150 150: ' + (slideWithMovedElement.elements[0].position.x === 150 && slideWithMovedElement.elements[0].position.y === 150 ? 'done' : 'failed'));
-    slideWithMovedElement = changeElementPosition(slideWithMovedElement, changedPositionSlideElementId, {x: 13, y: 11});
+    slideWithMovedElement = changeElementPosition(slideWithMovedElement, changedPositionSlideElementId, { x: 13, y: 11 });
     console.log('Elemenet moved to 13 11: ' + (slideWithMovedElement.elements[0].position.x === 13 && slideWithMovedElement.elements[0].position.y === 11 ? 'done' : 'failed'));
-
-    const presentationWithChangeELementSize = addSlide(minimalPresentation);
-    let slideWithChangedElementSize = addPictureElement(presentationWithChangeELementSize.slideList[0]);
-    const changedSizeElementId = slideWithChangedElementSize.elements[0].id;
+    var presentationWithChangeELementSize = addSlide(minimalPresentation);
+    var slideWithChangedElementSize = addPictureElement(presentationWithChangeELementSize.slideList[0]);
+    var changedSizeElementId = slideWithChangedElementSize.elements[0].id;
     slideWithChangedElementSize = changeElementSize(slideWithChangedElementSize, changedSizeElementId, {
         width: 150,
         height: 150
@@ -194,88 +140,69 @@ function testMinimalPresentation() {
         height: 11
     });
     console.log('Elemenet resized to 13x11: ' + (slideWithChangedElementSize.elements[0].size.width === 13 && slideWithChangedElementSize.elements[0].size.height === 11 ? 'done' : 'failed'));
-
-    const presentationOnTestElementPropertiesChange = addSlide(minimalPresentation);
-    let slideWithText = addTextElement(presentationOnTestElementPropertiesChange.slideList[0]);
-    const textElementIdToChangeFont = slideWithText.elements[0].id;
+    var presentationOnTestElementPropertiesChange = addSlide(minimalPresentation);
+    var slideWithText = addTextElement(presentationOnTestElementPropertiesChange.slideList[0]);
+    var textElementIdToChangeFont = slideWithText.elements[0].id;
     slideWithText = changeTextFontSize(slideWithText, textElementIdToChangeFont, 15);
     slideWithText = changeTextFontFamily(slideWithText, textElementIdToChangeFont, 'Arial');
     slideWithText = changeTextColor(slideWithText, textElementIdToChangeFont, '#FF00FF');
     slideWithText = changeTextContent(slideWithText, textElementIdToChangeFont, 'Test1');
-    let changetTextElement: SlideElement = slideWithText.elements[0];
-    console.log('Test change text element propeties: ' + (
-        changetTextElement.type === 'text'
+    var changetTextElement = slideWithText.elements[0];
+    console.log('Test change text element propeties: ' + (changetTextElement.type === 'text'
         && changetTextElement.fontSize === 15
         && changetTextElement.fontFamily === 'Arial'
         && changetTextElement.color === '#FF00FF'
         && changetTextElement.content === 'Test1'
-            ? 'done'
-            : 'failed')
-    );
+        ? 'done'
+        : 'failed'));
     slideWithText = changeTextFontSize(slideWithText, textElementIdToChangeFont, 22);
     slideWithText = changeTextFontFamily(slideWithText, textElementIdToChangeFont, 'Timew New Roman');
     slideWithText = changeTextColor(slideWithText, textElementIdToChangeFont, '#00FF00');
     slideWithText = changeTextContent(slideWithText, textElementIdToChangeFont, '2Test');
     changetTextElement = slideWithText.elements[0];
-    console.log('Test change text element propeties: ' + (
-        changetTextElement.type === 'text'
+    console.log('Test change text element propeties: ' + (changetTextElement.type === 'text'
         && changetTextElement.fontSize === 22
         && changetTextElement.fontFamily === 'Timew New Roman'
         && changetTextElement.color === '#00FF00'
         && changetTextElement.content === '2Test'
-            ? 'done'
-            : 'failed')
-    );
-
-    const presentationWithChangeSlideBackground = addSlide(minimalPresentation);
-    let slideWithChangedBackground = changeSlideBackground(presentationWithChangeSlideBackground.slideList[0], '#FFF000');
+        ? 'done'
+        : 'failed'));
+    var presentationWithChangeSlideBackground = addSlide(minimalPresentation);
+    var slideWithChangedBackground = changeSlideBackground(presentationWithChangeSlideBackground.slideList[0], '#FFF000');
     console.log('Slide background changed to #FFF000: ' + (slideWithChangedBackground.background === '#FFF000' ? 'done' : 'failed'));
     slideWithChangedBackground = changeSlideBackground(slideWithChangedBackground, '#000FFF');
     console.log('Slide background changed to #000FFF: ' + (slideWithChangedBackground.background === '#000FFF' ? 'done' : 'failed'));
-
     console.log('Minimal presentation version tests done.');
 }
-
-
 function testMaximalPresentation() {
     console.log('Test presentation with maximal data');
-
-    const renamedPresentation = updatePresentationTitle(maxPresentation, 'New test name');
+    var renamedPresentation = updatePresentationTitle(maxPresentation, 'New test name');
     console.log('Rename presentation: ' + (renamedPresentation.title === 'New test name' ? 'done' : 'failed'));
-
-
-    const presentationBeforeAddSlideCount = 3;
-    let presentationWithSlide = addSlide(maxPresentation);
+    var presentationBeforeAddSlideCount = 3;
+    var presentationWithSlide = addSlide(maxPresentation);
     console.log('Add slide to presentation: ' + (presentationWithSlide.slideList.length === presentationBeforeAddSlideCount + 1 ? 'done' : 'failed'));
     presentationWithSlide = removeSlides(presentationWithSlide, ['slide1']);
     console.log('Remove slide from presentation: ' + (presentationWithSlide.slideList.length === presentationBeforeAddSlideCount ? 'done' : 'failed'));
-    console.log('Presentation with id "slde1" removed: ' + (presentationWithSlide.slideList.findIndex(slide => slide.id === 'slide1') === -1 ? 'done' : 'failed'))
-
-    const presentationWithSlideToMove = changeSlidePosition(maxPresentation, 2);
+    console.log('Presentation with id "slde1" removed: ' + (presentationWithSlide.slideList.findIndex(function (slide) { return slide.id === 'slide1'; }) === -1 ? 'done' : 'failed'));
+    var presentationWithSlideToMove = changeSlidePosition(maxPresentation, 2);
     console.log('Move slide: ' + (presentationWithSlideToMove.slideList[2].id === 'slide1' ? 'done' : 'failed'));
-
-
-    let slideWithElements = addTextElement(slide1);
+    var slideWithElements = addTextElement(slide1);
     console.log('Add text element on slide: ' + (slideWithElements.elements.length === 3 && slideWithElements.elements[2].type === 'text' ? 'done' : 'failed'));
     slideWithElements = addPictureElement(slideWithElements);
     console.log('Add picture element on slide: ' + (slideWithElements.elements.length === 4 && slideWithElements.elements[3].type === 'picture' ? 'done' : 'failed'));
     slideWithElements = deleteObjects(slideWithElements, ['picture_element1']);
-    console.log('Remove picture element from slide: ' + (slideWithElements.elements.findIndex(slideElement => slideElement.id === 'picture_element2') === -1
+    console.log('Remove picture element from slide: ' + (slideWithElements.elements.findIndex(function (slideElement) { return slideElement.id === 'picture_element2'; }) === -1
         ? 'done'
-        : 'failed')
-    );
+        : 'failed'));
     slideWithElements = deleteObjects(slideWithElements, ['text_element1']);
-    console.log('Remove text element from slide: ' + (slideWithElements.elements.findIndex(slideElement => slideElement.id === 'text_element2') === -1
+    console.log('Remove text element from slide: ' + (slideWithElements.elements.findIndex(function (slideElement) { return slideElement.id === 'text_element2'; }) === -1
         ? 'done'
-        : 'failed')
-    );
-
-    let slideWithMovedElement = changeElementPosition(slide2, 'picture_element2', {x: 150, y: 150});
+        : 'failed'));
+    var slideWithMovedElement = changeElementPosition(slide2, 'picture_element2', { x: 150, y: 150 });
     console.log('Elemenet moved to 150 150: ' + (slideWithMovedElement.elements[0].position.x === 150 && slideWithMovedElement.elements[0].position.y === 150 ? 'done' : 'failed'));
-    slideWithMovedElement = changeElementPosition(slideWithMovedElement, 'picture_element2', {x: 13, y: 11});
+    slideWithMovedElement = changeElementPosition(slideWithMovedElement, 'picture_element2', { x: 13, y: 11 });
     console.log('Elemenet moved to 13 11: ' + (slideWithMovedElement.elements[0].position.x === 13 && slideWithMovedElement.elements[0].position.y === 11 ? 'done' : 'failed'));
-
-    let slideWithChangedElementSize = addPictureElement(slide3);
+    var slideWithChangedElementSize = addPictureElement(slide3);
     slideWithChangedElementSize = changeElementSize(slideWithChangedElementSize, 'text_element2', {
         width: 150,
         height: 150
@@ -286,50 +213,40 @@ function testMaximalPresentation() {
         height: 11
     });
     console.log('Elemenet resized to 13x11: ' + (slideWithChangedElementSize.elements[0].size.width === 13 && slideWithChangedElementSize.elements[0].size.height === 11 ? 'done' : 'failed'));
-
-    let slideWithText = changeTextFontSize(slide3, 'text_element2', 15);
+    var slideWithText = changeTextFontSize(slide3, 'text_element2', 15);
     slideWithText = changeTextFontFamily(slideWithText, 'text_element2', 'Arial');
     slideWithText = changeTextColor(slideWithText, 'text_element2', '#FF00FF');
     slideWithText = changeTextContent(slideWithText, 'text_element2', 'Test1');
-    let changetTextElement: SlideElement = slideWithText.elements[0];
-    console.log('Test change text element propeties: ' + (
-        changetTextElement.type === 'text'
+    var changetTextElement = slideWithText.elements[0];
+    console.log('Test change text element propeties: ' + (changetTextElement.type === 'text'
         && changetTextElement.fontSize === 15
         && changetTextElement.fontFamily === 'Arial'
         && changetTextElement.color === '#FF00FF'
         && changetTextElement.content === 'Test1'
-            ? 'done'
-            : 'failed')
-    );
+        ? 'done'
+        : 'failed'));
     slideWithText = changeTextFontSize(slideWithText, 'text_element2', 22);
     slideWithText = changeTextFontFamily(slideWithText, 'text_element2', 'Timew New Roman');
     slideWithText = changeTextColor(slideWithText, 'text_element2', '#00FF00');
     slideWithText = changeTextContent(slideWithText, 'text_element2', '2Test');
     changetTextElement = slideWithText.elements[0];
-    console.log('Test change text element propeties: ' + (
-        changetTextElement.type === 'text'
+    console.log('Test change text element propeties: ' + (changetTextElement.type === 'text'
         && changetTextElement.fontSize === 22
         && changetTextElement.fontFamily === 'Timew New Roman'
         && changetTextElement.color === '#00FF00'
         && changetTextElement.content === '2Test'
-            ? 'done'
-            : 'failed')
-    );
-
-    let slideWithChangedBackground = changeSlideBackground(slide1, '#FFF000');
+        ? 'done'
+        : 'failed'));
+    var slideWithChangedBackground = changeSlideBackground(slide1, '#FFF000');
     console.log('Slide background changed to #FFF000: ' + (slideWithChangedBackground.background === '#FFF000' ? 'done' : 'failed'));
     slideWithChangedBackground = changeSlideBackground(slideWithChangedBackground, '#000FFF');
     console.log('Slide background changed to #000FFF: ' + (slideWithChangedBackground.background === '#000FFF' ? 'done' : 'failed'));
-
     console.log('Maximal presentation version tests done.');
 }
-
 export default function testFunctions() {
     console.log('Start testing');
     testMinimalPresentation();
     testMaximalPresentation();
-
     console.log('All tests done.');
 }
-
 testFunctions();

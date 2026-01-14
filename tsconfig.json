@@ -4,6 +4,12 @@
     "lib": [
       "ES2020",
       "DOM"
-    ]
-  }
+    ],
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "./web/js/",
+    "rootDir": "./src",
+  },
+  "include": ["src/**/*"]
 }
