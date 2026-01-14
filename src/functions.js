@@ -1,13 +1,30 @@
-function updatePresentationTitle(presentation, title) {
-    return {
-        ...presentation,
-        title: title
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
     };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+export function updatePresentationTitle(presentation, title) {
+    return __assign(__assign({}, presentation), { title: title });
 }
-function addSlide(presentation) {
-    const newSlide = creteSlide();
-    let newSlideList;
-    let newCurrentSlide;
+export function addSlide(presentation) {
+    var newSlide = creteSlide();
+    var newSlideList;
+    var newCurrentSlide;
     if (presentation.currentSlide === null) {
         newSlideList = [newSlide];
         newCurrentSlide = 0;
@@ -16,41 +33,27 @@ function addSlide(presentation) {
         newSlideList = presentation.slideList.splice(presentation.currentSlide, 0, newSlide);
         newCurrentSlide = presentation.currentSlide + 1;
     }
-    return {
-        ...presentation,
-        slideList: newSlideList,
-        currentSlide: newCurrentSlide
-    };
+    return __assign(__assign({}, presentation), { slideList: newSlideList, currentSlide: newCurrentSlide });
 }
-function removeSlides(presentation, slideIds) {
-    const newSlides = presentation.slideList.filter(slide => !slideIds.includes(slide.id));
-    let newCurrentSlide = null;
+export function removeSlides(presentation, slideIds) {
+    var newSlides = presentation.slideList.filter(function (slide) { return !slideIds.includes(slide.id); });
+    var newCurrentSlide = null;
     if (newSlides.length > 0) {
         newCurrentSlide = newSlides.length > presentation.currentSlide ? presentation.currentSlide : 0;
     }
-    return {
-        ...presentation,
-        slideList: newSlides,
-        currentSlide: newCurrentSlide
-    };
+    return __assign(__assign({}, presentation), { slideList: newSlides, currentSlide: newCurrentSlide });
 }
-function changeSlidePosition(presentation, newPosition) {
+export function changeSlidePosition(presentation, newPosition) {
     if (presentation.currentSlide === null) {
-        return { ...presentation };
+        return __assign({}, presentation);
     }
-    const slides = [...presentation.slideList];
-    const [movedSlide] = slides.splice(presentation.currentSlide, 1);
+    var slides = __spreadArray([], presentation.slideList, true);
+    var movedSlide = slides.splice(presentation.currentSlide, 1)[0];
     slides.splice(newPosition, 0, movedSlide);
-    return {
-        ...presentation,
-        slideList: slides
-    };
+    return __assign(__assign({}, presentation), { slideList: slides });
 }
-function addText(slide) {
-    return {
-        ...slide,
-        elements: [
-            ...slide.elements,
+export function addTextElement(slide) {
+    return __assign(__assign({}, slide), { elements: __spreadArray(__spreadArray([], slide.elements, true), [
             {
                 id: generateId(),
                 type: 'text',
@@ -61,14 +64,10 @@ function addText(slide) {
                 fontFamily: 'Arial',
                 color: '#000000'
             }
-        ]
-    };
+        ], false) });
 }
-function addPicture(slide) {
-    return {
-        ...slide,
-        elements: [
-            ...slide.elements,
+export function addPictureElement(slide) {
+    return __assign(__assign({}, slide), { elements: __spreadArray(__spreadArray([], slide.elements, true), [
             {
                 id: generateId(),
                 type: 'picture',
@@ -76,104 +75,61 @@ function addPicture(slide) {
                 position: { x: 100, y: 100 },
                 size: { width: 200, height: 100 },
             }
-        ]
-    };
+        ], false) });
 }
-function deleteObjects(slide, slideElementIds) {
-    return {
-        ...slide,
-        elements: slide.elements.filter(slideElement => !slideElementIds.includes(slideElement.id))
-    };
+export function deleteObjects(slide, slideElementIds) {
+    return __assign(__assign({}, slide), { elements: slide.elements.filter(function (slideElement) { return !slideElementIds.includes(slideElement.id); }) });
 }
-function changeElementPosition(slide, slideElementId, position) {
-    return {
-        ...slide,
-        elements: slide.elements.map(slideElement => {
+export function changeElementPosition(slide, slideElementId, position) {
+    return __assign(__assign({}, slide), { elements: slide.elements.map(function (slideElement) {
             if (slideElement.id !== slideElementId) {
                 return slideElement;
             }
-            return {
-                ...slideElement,
-                position: position
-            };
-        })
-    };
+            return __assign(__assign({}, slideElement), { position: position });
+        }) });
 }
-function changeElementSize(slide, slideElementId, size) {
-    return {
-        ...slide,
-        elements: slide.elements.map(slideElement => {
+export function changeElementSize(slide, slideElementId, size) {
+    return __assign(__assign({}, slide), { elements: slide.elements.map(function (slideElement) {
             if (slideElement.id !== slideElementId) {
                 return slideElement;
             }
-            return {
-                ...slideElement,
-                size: size
-            };
-        })
-    };
+            return __assign(__assign({}, slideElement), { size: size });
+        }) });
 }
-function changeTextContent(slide, slideElementId, newTextContent) {
-    return {
-        ...slide,
-        elements: slide.elements.map(slideElement => {
+export function changeTextContent(slide, slideElementId, newTextContent) {
+    return __assign(__assign({}, slide), { elements: slide.elements.map(function (slideElement) {
             if (slideElement.id !== slideElementId) {
                 return slideElement;
             }
-            return {
-                ...slideElement,
-                content: newTextContent
-            };
-        })
-    };
+            return __assign(__assign({}, slideElement), { content: newTextContent });
+        }) });
 }
-function changeTextFontSize(slide, slideElementId, newFontSize) {
-    return {
-        ...slide,
-        elements: slide.elements.map(slideElement => {
+export function changeTextFontSize(slide, slideElementId, newFontSize) {
+    return __assign(__assign({}, slide), { elements: slide.elements.map(function (slideElement) {
             if (slideElement.id !== slideElementId) {
                 return slideElement;
             }
-            return {
-                ...slideElement,
-                fontSize: newFontSize
-            };
-        })
-    };
+            return __assign(__assign({}, slideElement), { fontSize: newFontSize });
+        }) });
 }
-function changeTextFontFamily(slide, slideElementId, newFontFamiy) {
-    return {
-        ...slide,
-        elements: slide.elements.map(slideElement => {
+export function changeTextFontFamily(slide, slideElementId, newFontFamiy) {
+    return __assign(__assign({}, slide), { elements: slide.elements.map(function (slideElement) {
             if (slideElement.id !== slideElementId) {
                 return slideElement;
             }
-            return {
-                ...slideElement,
-                fontFamily: newFontFamiy
-            };
-        })
-    };
+            return __assign(__assign({}, slideElement), { fontFamily: newFontFamiy });
+        }) });
 }
-function changeTextColor(slide, slideElementId, newTextColor) {
-    return {
-        ...slide,
-        elements: slide.elements.map(slideElement => {
+export function changeTextColor(slide, slideElementId, newTextColor) {
+    return __assign(__assign({}, slide), { elements: slide.elements.map(function (slideElement) {
             if (slideElement.id !== slideElementId) {
                 return slideElement;
             }
-            return {
-                ...slideElement,
-                color: newTextColor
-            };
-        })
-    };
+            return __assign(__assign({}, slideElement), { color: newTextColor });
+        }) });
 }
-function changeSlideBackground(slide, background) {
-    return {
-        ...slide,
-        background: background
-    };
+export function changeSlideBackground(slide, background) {
+    return __assign(__assign({}, slide), { background: background });
 }
 function creteSlide() {
     return {
@@ -183,6 +139,5 @@ function creteSlide() {
     };
 }
 function generateId() {
-    return `f${(+new Date().getMilliseconds()).toString(16)}`;
+    return "f".concat((+new Date().getMilliseconds()).toString(16));
 }
-export {};

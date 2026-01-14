@@ -7,14 +7,14 @@ import {
     ElementPosition,
 } from "./types";
 
-function updatePresentationTitle(presentation: Presentation, title: string): Presentation {
+export function updatePresentationTitle(presentation: Presentation, title: string): Presentation {
     return {
         ...presentation,
         title: title
     };
 }
 
-function addSlide(presentation: Presentation): Presentation {
+export function addSlide(presentation: Presentation): Presentation {
     const newSlide = creteSlide();
     let newSlideList: SlideList;
     let newCurrentSlide: number;
@@ -34,13 +34,13 @@ function addSlide(presentation: Presentation): Presentation {
     }
 }
 
-function removeSlides(presentation: Presentation, slideIds: string[]): Presentation {
+export function removeSlides(presentation: Presentation, slideIds: string[]): Presentation {
     const newSlides: SlideList = presentation.slideList.filter(slide => !slideIds.includes(slide.id));
 
     let newCurrentSlide: number | null = null;
 
     if (newSlides.length > 0) {
-        newCurrentSlide = newSlides.length > presentation.currentSlide ? presentation.currentSlide : 0;
+        newCurrentSlide = newSlides.length > (presentation.currentSlide || 0) ? presentation.currentSlide : 0;
     }
 
     return {
@@ -50,7 +50,7 @@ function removeSlides(presentation: Presentation, slideIds: string[]): Presentat
     }
 }
 
-function changeSlidePosition(presentation: Presentation, newPosition: number): Presentation {
+export function changeSlidePosition(presentation: Presentation, newPosition: number): Presentation {
     if (presentation.currentSlide === null) {
         return {...presentation};
     }
@@ -66,7 +66,7 @@ function changeSlidePosition(presentation: Presentation, newPosition: number): P
     }
 }
 
-function addText(slide: Slide): Slide {
+export function addTextElement(slide: Slide): Slide {
     return {
         ...slide,
         elements: [
@@ -85,7 +85,7 @@ function addText(slide: Slide): Slide {
     };
 }
 
-function addPicture(slide: Slide): Slide {
+export function addPictureElement(slide: Slide): Slide {
     return {
         ...slide,
         elements: [
@@ -101,14 +101,14 @@ function addPicture(slide: Slide): Slide {
     };
 }
 
-function deleteObjects(slide: Slide, slideElementIds: string[]): Slide {
+export function deleteObjects(slide: Slide, slideElementIds: string[]): Slide {
     return {
         ...slide,
         elements: slide.elements.filter(slideElement => !slideElementIds.includes(slideElement.id))
     };
 }
 
-function changeElementPosition(slide: Slide, slideElementId: string, position: ElementPosition): Slide {
+export function changeElementPosition(slide: Slide, slideElementId: string, position: ElementPosition): Slide {
     return {
         ...slide,
         elements: slide.elements.map(slideElement => {
@@ -124,7 +124,7 @@ function changeElementPosition(slide: Slide, slideElementId: string, position: E
     };
 }
 
-function changeElementSize(slide: Slide, slideElementId: string, size: ElementSize): Slide {
+export function changeElementSize(slide: Slide, slideElementId: string, size: ElementSize): Slide {
     return {
         ...slide,
         elements: slide.elements.map(slideElement => {
@@ -140,7 +140,7 @@ function changeElementSize(slide: Slide, slideElementId: string, size: ElementSi
     };
 }
 
-function changeTextContent(slide: Slide, slideElementId: string, newTextContent: string): Slide {
+export function changeTextContent(slide: Slide, slideElementId: string, newTextContent: string): Slide {
     return {
         ...slide,
         elements: slide.elements.map(slideElement => {
@@ -156,7 +156,7 @@ function changeTextContent(slide: Slide, slideElementId: string, newTextContent:
     };
 }
 
-function changeTextFontSize(slide: Slide, slideElementId: string, newFontSize: number): Slide {
+export function changeTextFontSize(slide: Slide, slideElementId: string, newFontSize: number): Slide {
     return {
         ...slide,
         elements: slide.elements.map(slideElement => {
@@ -172,7 +172,7 @@ function changeTextFontSize(slide: Slide, slideElementId: string, newFontSize: n
     };
 }
 
-function changeTextFontFamily(slide: Slide, slideElementId: string, newFontFamiy: string): Slide {
+export function changeTextFontFamily(slide: Slide, slideElementId: string, newFontFamiy: string): Slide {
     return {
         ...slide,
         elements: slide.elements.map(slideElement => {
@@ -188,7 +188,7 @@ function changeTextFontFamily(slide: Slide, slideElementId: string, newFontFamiy
     };
 }
 
-function changeTextColor(slide: Slide, slideElementId: string, newTextColor: string): Slide {
+export function changeTextColor(slide: Slide, slideElementId: string, newTextColor: string): Slide {
     return {
         ...slide,
         elements: slide.elements.map(slideElement => {
@@ -204,7 +204,7 @@ function changeTextColor(slide: Slide, slideElementId: string, newTextColor: str
     };
 }
 
-function changeSlideBackground(slide: Slide, background: string): Slide {
+export function changeSlideBackground(slide: Slide, background: string): Slide {
     return {
         ...slide,
         background: background
