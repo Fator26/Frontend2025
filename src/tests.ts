@@ -1,11 +1,9 @@
 import {
     Presentation,
-    SlideList,
     Slide,
     SlideElement,
     ElementSize,
     ElementPosition,
-    Selection,
     TextElement,
     PictureElement
 } from "./types.js";
