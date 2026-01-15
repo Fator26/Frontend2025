@@ -3,6 +3,7 @@ export type Presentation = {
     title: string,
     slideList: SlideList,
     currentSlide: number | null,
+    // сделать нормально на Selection
 };
 
 export type SlideList = Slide[];

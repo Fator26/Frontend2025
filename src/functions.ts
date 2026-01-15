@@ -5,7 +5,7 @@ import {
     SlideElement,
     ElementSize,
     ElementPosition,
-} from "./types.js";
+} from "./types";
 
 export function updatePresentationTitle(presentation: Presentation, title: string): Presentation {
     return {
@@ -131,7 +131,7 @@ export function changeElementSize(slide: Slide, slideElementId: string, size: El
 
             return {
                 ...slideElement,
-                size: size
+                size
             } as SlideElement;
         })
     };
