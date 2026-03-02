@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "ES2020",
+    "module": "ES2023",
     "lib": [
-      "ES2020",
+      "ES2023",
       "DOM"
     ],
     "moduleResolution": "bundler",

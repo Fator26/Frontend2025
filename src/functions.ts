@@ -4,8 +4,11 @@ import {
     Slide,
     SlideElement,
     ElementSize,
-    ElementPosition,
+    ElementPosition
 } from "./types";
+
+import {v4 as uuidv4} from 'uuid';
+
 
 export function updatePresentationTitle(presentation: Presentation, title: string): Presentation {
     return {
@@ -17,49 +20,89 @@ export function updatePresentationTitle(presentation: Presentation, title: strin
 export function addSlide(presentation: Presentation): Presentation {
     const newSlide = createSlide();
     let newSlideList: SlideList;
-    let newCurrentSlide: number;
 
-    if (presentation.currentSlide === null) {
+    if (presentation.slideList.length === 0) {
         newSlideList = [newSlide];
-        newCurrentSlide = 0;
     } else {
+        const lastSelectedSlidePosition = presentation.slideList.findLastIndex(slide => presentation.selection.selectedSlideIds.includes(slide.id));
         newSlideList = presentation.slideList;
-        newSlideList.splice(presentation.currentSlide + 1, 0, newSlide);
-        newCurrentSlide = presentation.currentSlide + 1;
+        newSlideList.splice(lastSelectedSlidePosition + 1, 0, newSlide);
     }
 
     return {
         ...presentation,
         slideList: newSlideList,
-        currentSlide: newCurrentSlide
-    }
+        selection: {
+            selectedSlideIds: [newSlide.id],
+            selectedElementIds: []
+        }
+    };
 }
 
-export function removeSlides(presentation: Presentation, slideIds: string[]): Presentation {
-    const newSlides: SlideList = presentation.slideList.filter(slide => !slideIds.includes(slide.id));
+export function removeSlides(presentation: Presentation): Presentation {
+    const firstSelectedSlideIdx: number = presentation.slideList.findIndex(slide => presentation.selection.selectedSlideIds.includes(slide.id));
+    let newSlides: SlideList = presentation.slideList.filter(slide => !presentation.selection.selectedSlideIds.includes(slide.id));
+    let newSlideSelection: string[];
 
-    let newCurrentSlide: number | null = null;
-
-    if (newSlides.length > 0) {
-        newCurrentSlide = newSlides.length > (presentation.currentSlide || 0) ? presentation.currentSlide : 0;
+    if (newSlides.length === 0) {
+        newSlides = [];
+        newSlideSelection = [];
+    } else if (firstSelectedSlideIdx <= 0) {
+        newSlideSelection = [newSlides[0].id];
+    } else {
+        newSlideSelection = [newSlides[firstSelectedSlideIdx - 1].id];
     }
 
     return {
         ...presentation,
         slideList: newSlides,
-        currentSlide: newCurrentSlide
+        selection: {
+            selectedSlideIds: newSlideSelection,
+            selectedElementIds: []
+        }
     }
 }
 
 export function changeSlidePosition(presentation: Presentation, newPosition: number): Presentation {
-    const slides = [...presentation.slideList];
-    const [movedSlide] = slides.splice(<number>presentation.currentSlide, 1);
-    slides.splice(newPosition, 0, movedSlide);
+    const newSlides = [...presentation.slideList];
+    const firstSelectedSlideIdx: number = presentation.slideList.findIndex(slide => presentation.selection.selectedSlideIds.includes(slide.id));
+    const [movedSlide] = newSlides.splice(firstSelectedSlideIdx, 1);
+    newSlides.splice(newPosition, 0, movedSlide);
 
 
     return {
         ...presentation,
-        slideList: slides
+        slideList: newSlides,
+        selection: {
+            selectedSlideIds: [movedSlide.id],
+            selectedElementIds: []
+        }
+    }
+}
+
+export function selectSlide(presentation: Presentation, slideId: string): Presentation {
+    return {
+        ...presentation,
+        selection: {
+            selectedSlideIds: [slideId],
+            selectedElementIds: []
+        }
+    }
+}
+
+export function addSlideSelection(presentation: Presentation, newSlideId: string): Presentation {
+    let newSlideSelectionList: string[] = presentation.selection.selectedSlideIds.filter(slideId => slideId !== newSlideId);
+
+    if (!newSlideSelectionList.includes(newSlideId)) {
+        newSlideSelectionList.unshift(newSlideId);
+    }
+
+    return {
+        ...presentation,
+        selection: {
+            selectedSlideIds: newSlideSelectionList,
+            selectedElementIds: []
+        }
     }
 }
 
@@ -208,6 +251,32 @@ export function changeSlideBackground(slide: Slide, background: string): Slide {
     };
 }
 
+export function selectElement(presentation: Presentation, newSelectId: string): Presentation {
+    return {
+        ...presentation,
+        selection: {
+            ...(this.selection),
+            selectedElementIds: [newSelectId]
+        }
+    }
+}
+
+export function addElementSelection(presentation: Presentation, newSelectId: string): Presentation {
+    let newElementSelectionList: string[] = presentation.selection.selectedElementIds.filter(elementId => elementId !== newSelectId);
+
+    if (!newElementSelectionList.includes(newSelectId)) {
+        newElementSelectionList.unshift(newSelectId);
+    }
+
+    return {
+        ...presentation,
+        selection: {
+            ...(this.selection),
+            newElementSelectionList: []
+        }
+    }
+}
+
 function createSlide(): Slide {
     return {
         id: generateId(),
@@ -218,5 +287,5 @@ function createSlide(): Slide {
 
 function generateId(): string {
     // return `f${(+new Date().getMilliseconds()).toString(16)}`;
-    return `f${crypto.randomUUID()}`;
+    return `f${uuidv4()}`;
 }

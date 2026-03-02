@@ -2,8 +2,7 @@ export type Presentation = {
     id: string,
     title: string,
     slideList: SlideList,
-    currentSlide: number | null,
-    // сделать нормально на Selection
+    selection: Selection,
 };
 
 export type SlideList = Slide[];
